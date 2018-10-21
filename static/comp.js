@@ -32,7 +32,7 @@ function compDel ({target}) {
 };
 
 function compAdd (n,i) {
-	const newUser = {name:n.value,uid:i.value};
+	const newUser = {name:n.value,uid:parseInt(i.value)};
 	
 	reqPList(newUser,LISTA);
 };
