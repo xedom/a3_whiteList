@@ -33,5 +33,6 @@ function compDel ({target}) {
 
 function compAdd (n,i) {
 	const newUser = {name:n.value,uid:i.value};
+	
 	reqPList(newUser,LISTA);
 };
