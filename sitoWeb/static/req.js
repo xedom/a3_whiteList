@@ -1,5 +1,5 @@
 function reqGList(cb,comp) {
-	$.ajax({url:APIURI}).done(x => {
+	$.ajax({url:APIURI+'api'}).done(x => {
 		x.forEach(el => {
 			cb(comp,el.name,el.uid)
 		});
@@ -7,9 +7,12 @@ function reqGList(cb,comp) {
 };
 
 function reqDList(uid,comp) {
-	$.ajax({url:APIURI,
+	$.ajax({url:APIURI+'api',
 		type:'DELETE',
-		data: {uid}
+		data: {uid},
+		headers: {
+			"token":window.localStorage.getItem('token') || null
+		}
 	}).done(x => {
 		Array.from(comp.children).forEach(el => {
 			if(el.id == uid) {
@@ -20,30 +23,56 @@ function reqDList(uid,comp) {
 };
 
 function reqPList(data,comp) {
-	$.ajax({url:APIURI,
-		type:'POST',data
+	$.ajax({url:APIURI+'api',
+		type:'POST',data,
+		headers: {
+			"token":window.localStorage.getItem('token') || null
+		}
 	}).done(x => { 
 		compRen(comp,x.name,x.uid);
-		
-		const body = ADDMODAL.getElementsByClassName('modal-body')[0];
-		const al = document.createElement('div');
-		al.classList.add('alert','alert-success');
-		al.innerText = `Aggiunto: ${x.name} (${x.uid})`;
 
-		body.insertBefore(al,body.childNodes[0]);
+		alertBox(
+			ADDMODAL.getElementsByClassName('modal-body')[0],
+			`Aggiunto: ${x.name} (${x.uid})`,
+			'success'
+		);
 
 		NAMEINP.value = '';
 		UIDINP.value = '';
-
-		setTimeout(function(){ ADDMODAL.getElementsByClassName('modal-body')[0].removeChild(ADDMODAL.getElementsByClassName('modal-body')[0].children[0]); },5000);
 	}).fail(x => {
-		const body = ADDMODAL.getElementsByClassName('modal-body')[0];
-		const al = document.createElement('div');
-		al.classList.add('alert','alert-danger');
-		al.innerText = x.responseJSON.error;
+		alertBox(
+			ADDMODAL.getElementsByClassName('modal-body')[0],
+			x.responseJSON.error,
+			'danger'
+		);
+	});
+};
 
-		body.insertBefore(al,body.childNodes[0]);
 
-		setTimeout(function(){ ADDMODAL.getElementsByClassName('modal-body')[0].removeChild(ADDMODAL.getElementsByClassName('modal-body')[0].children[0]); },5000);
+function reqPLoginSS(key) {
+	$.ajax({url:APIURI+'login',
+		type:'POST',
+		data: { token: key.value }
+	}).done(x => {
+		alertBox(
+			LOGMODAL.getElementsByClassName('modal-body')[0],
+			'Accesso effettuato con successo',
+			'success'
+		);
+		
+		window.localStorage.setItem('token',x.token);
+		LOGLAB.setAttribute('typlog','logout');
+		LOGLAB.innerText = 'Logout';
+
+		key.value = '';
+	}).fail(x => {
+		alertBox(
+			LOGMODAL.getElementsByClassName('modal-body')[0],
+			'Chiave invalida',
+			'danger'
+		);
+        window.localStorage.removeItem('token');
+        LOGLAB.setAttribute('typlog','login');
+		LOGLAB.innerText = 'Login';
 	});
 };

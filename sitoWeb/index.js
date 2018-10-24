@@ -4,6 +4,15 @@ const port = process.env.port || 80;
 const apiRout = require('./api');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const access = require('./config.json').access;
+
+app.use(function (req, res, next) {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+	res.setHeader('Access-Control-Allow-Credentials', true);
+	next();
+});
 
 app.use(express.static('static'));
 app.set('views', './')
@@ -16,6 +25,16 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api',apiRout);
+
+app.post('/login', (req, res) => {
+    console.log(req.body);
+
+    if(req.body.token === access.adminPassword) {
+        return res.status(200).json( req.body );
+    };
+
+    res.status(406).json({ error: "Key errata" });
+});
 
 app.get('/lista', (req,res) => {
     let jData = fs.readFileSync('./jData.json', 'utf8') && JSON.parse(fs.readFileSync('./jData.json', 'utf8')) || [];
