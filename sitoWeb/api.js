@@ -38,9 +38,9 @@ rout.post('/', auth, (req,res) => {
 		if (typeof req.body.name != 'string') {
 			res.status(406).json({error:"Errore con il nome"});
 		} else if (!(req.body.uid.length == 17 && /([0-9]){17}/.test(req.body.uid))) {
-			res.status(406).json({error:`Errore con l'id (l'id deve essere composto da 17 numeri){${req.body.uid.length}}`,msg:parseInt(req.body.id)});
+			res.status(406).json({error:`Errore con l'id (l'id deve essere composto da 17 numeri){${req.body.uid.length}}`,msg:req.body.id});
 		} else {
-			jData = [...jData, {name:req.body.name, uid:parseInt(req.body.uid)}];
+			jData = [...jData, {name:req.body.name, uid:req.body.uid}];
 
 			fs.writeFileSync('./jData.json',JSON.stringify(jData));
 			res.status(200).json(req.body);
