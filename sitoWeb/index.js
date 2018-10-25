@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
-const port = process.env.port || access.port;
 const apiRout = require('./api');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const access = require('./config.json');
+const port = process.env.port || access.port;
 console.log('\033[2J');
 
 app.use(function (req, res, next) {
