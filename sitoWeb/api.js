@@ -12,7 +12,6 @@ rout.use(function (req, res, next) {
 });
 
 const auth = function (req, res, next) {
-	
 	if(req.headers.token === access.adminPassword) next();
 	else res.status(406).json({error:"Ti devi prima loggare"});
 };

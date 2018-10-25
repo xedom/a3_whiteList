@@ -38,10 +38,11 @@ app.post('/login', (req, res) => {
 app.get('/lista', (req,res) => {
     let jData = fs.readFileSync('./jData.json', 'utf8') && JSON.parse(fs.readFileSync('./jData.json', 'utf8')) || [];
   
-
     res.set('Content-Type', 'text/plain');
     if(req.query.type && req.query.type == 'json') {
         res.send(jData);
+    } else if (req.query.type && req.query.type == 'array') {
+        res.send('['+jData.map(el => `["${el.uid}","${el.name}"]`)+']');
     } else {
         if(req.query.filter && req.query.filter == 'nome') {
             res.send(jData.map(el => {
