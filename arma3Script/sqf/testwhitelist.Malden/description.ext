@@ -1,0 +1,10 @@
+class CfgDebriefing
+{  
+    class whitelist
+    {
+        title = "WHITELIST";
+        subtitle = "Non sei whitelistato.";
+        description = "Non sei whitelistato nel server per richiedere la whitelist recati in ts (ts: QCS)";
+        pictureColor[] = {0,1,0,1};	
+    };
+};
