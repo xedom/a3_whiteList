@@ -22,10 +22,8 @@ function alertBox(element, elText, color = 'success') {
 
 function loginSimpleSystem(e) {
     if(LOGLAB.getAttribute('typlog') === 'login') {
-        console.log('login')
         reqPLoginSS(e);
     } else if (LOGLAB.getAttribute('typlog') === 'logout') {
-        console.log('logout')
         window.localStorage.removeItem('token');
         LOGLAB.setAttribute('typlog','login');
 		LOGLAB.innerText = 'Login';
@@ -34,7 +32,6 @@ function loginSimpleSystem(e) {
 
 LOGLAB.addEventListener('click', (e) => {
     if (LOGLAB.getAttribute('typlog') === 'logout') {
-        console.log('logout')
         window.localStorage.removeItem('token');
         LOGLAB.setAttribute('typlog','login');
 		LOGLAB.innerText = 'Login';

@@ -1,7 +1,7 @@
 const express = require('express');
 const rout = express.Router();
 const fs = require('fs');
-const access = require('./config.json').access;
+const access = require('./config.json');
 
 rout.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,20 +11,18 @@ rout.use(function (req, res, next) {
 	next();
 });
 
-rout.use(function (req, res, next) {
+const auth = function (req, res, next) {
 	
-	if(req.headers.token === access.adminPassword) {
-		next();
-	}
-	res.status(406).json({error:"{ACCESSO NEGATO}"});
-});
+	if(req.headers.token === access.adminPassword) next();
+	else res.status(406).json({error:"Ti devi prima loggare"});
+};
 
 rout.get('/', (req,res) => {
 	let jData = fs.readFileSync('./jData.json', 'utf8') && JSON.parse(fs.readFileSync('./jData.json', 'utf8')) || [];
 	res.json(jData);
 });
 
-rout.delete('/', (req,res) => {
+rout.delete('/', auth, (req,res) => {
 	let jData = fs.readFileSync('./jData.json', 'utf8') && JSON.parse(fs.readFileSync('./jData.json', 'utf8')) || [];
 	jData = jData.filter(el => {
 		if (req.body.uid == el.uid) return false; return true;
@@ -34,7 +32,7 @@ rout.delete('/', (req,res) => {
 	res.json({status: true});
 });
 
-rout.post('/', (req,res) => {
+rout.post('/', auth, (req,res) => {
 	let jData = fs.readFileSync('./jData.json', 'utf8') && JSON.parse(fs.readFileSync('./jData.json', 'utf8')) || [];
 
 	if (req.body.name && req.body.uid) {

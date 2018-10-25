@@ -19,7 +19,7 @@ function reqDList(uid,comp) {
 				comp.removeChild(el);
 			};
 		})
-	});
+	}).fail(x => alert(x.responseJSON.error));
 };
 
 function reqPList(data,comp) {
