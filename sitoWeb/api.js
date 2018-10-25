@@ -37,8 +37,8 @@ rout.post('/', auth, (req,res) => {
 	if (req.body.name && req.body.uid) {
 		if (typeof req.body.name != 'string') {
 			res.status(406).json({error:"Errore con il nome"});
-		} else if ((typeof parseInt(req.body.uid) != 'number') || (parseInt(req.body.uid).toString().length != 17)) {
-			res.status(406).json({error:`Errore con l'id (l'id deve essere composto da 17 numeri){${parseInt(req.body.uid).toString().length}}`,msg:parseInt(req.body.id)});
+		} else if (!(req.body.uid.length == 17 && /([0-9]){17}/.test(req.body.uid))) {
+			res.status(406).json({error:`Errore con l'id (l'id deve essere composto da 17 numeri){${req.body.uid.length}}`,msg:parseInt(req.body.id)});
 		} else {
 			jData = [...jData, {name:req.body.name, uid:parseInt(req.body.uid)}];
 
