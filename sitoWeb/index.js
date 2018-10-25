@@ -42,7 +42,7 @@ app.get('/lista', (req,res) => {
     if(req.query.type && req.query.type == 'json') {
         res.send(jData);
     } else if (req.query.type && req.query.type == 'array') {
-        res.send('['+jData.map(el => `["${el.uid}","${el.name}"]`)+']');
+        res.send('['+ '[' +jData.map(el => `"${el.uid}"`)+ ']' + ',' + '['+jData.map(el => `"${el.name}"`)+']' + ',' + '[' +jData.map(el => `["${el.uid}","${el.name}"]`) + ']' +']');
     } else {
         if(req.query.filter && req.query.filter == 'nome') {
             res.send(jData.map(el => {

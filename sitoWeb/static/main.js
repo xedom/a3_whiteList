@@ -5,7 +5,7 @@ const KEYINP = document.querySelector('#keyLoginSys');
 const ADDMODAL = document.querySelector('#aggiuntaGiocatore');
 const LOGMODAL = document.querySelector('#loginModal');
 const LOGLAB = document.querySelector('.login');
-const APIURI = 'http://95.89.230.39/';
+const APIURI = 'http://82.60.168.170/';
 
 reqGList(compRen,LISTA);
 
